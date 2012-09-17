@@ -25,32 +25,40 @@ class Simplemovingaverage():
  
         return average
 f = sys.stdin
+#f = open('beats.wav')
 byte = f.read(2)
 pos = 0
 smoothing  = 1.5
 v=0
-smaInstant = Simplemovingaverage(700)
-smaLocal = Simplemovingaverage(7000)
+smaInstant = Simplemovingaverage(500)
+smaLocal = Simplemovingaverage(8000)
 bpm = 0
+decay = 0
 start = time.time()
-while True:
-	if byte == "":
-		byte = f.read(2)
+while byte != "":
 	pos += 1
 	#v += (struct.unpack('<h', byte)[0] - v) / smoothing
-	v = struct.unpack('<h', byte)[0] 
+	v = abs(struct.unpack('<h', byte)[0])
 
 	inst = smaInstant(v)	
 	local = smaLocal(v)	
+	if False:# pos % 1000 == 0:
+		print 'inst',inst
+		print 'local',local
+		print 'ratio', inst/local
 	try:
-		if (inst/local) > 30: bpm += 1
+		if (inst/float(local)) > 2 and decay <= 0:
+			bpm += 1
+			print '------beat-----'
+			decay = 6000
 	except:
 		pass
+	decay -= 1
 	byte = f.read(2)
 
-	if pos % 8000 == 0:
+	if pos % 32000 == 0:
 		print 'fps: ', (8000 / (time.time() - start))
-		print 'bpm', bpm
+		print 'bpm', bpm *15
 		bpm = 0
 		start = time.time()
 
