@@ -26,18 +26,11 @@ class Simplemovingaverage():
         return average
 f = sys.stdin
 byte = f.read(2)
-freq = 0
-old_trend = 0
-trend = 0
-peak = 0
 pos = 0
-old_v = 0
-change = 0
-smoothing  = 200
-sample_rate = 44100
+smoothing  = 1.5
 v=0
-smaInstant = Simplemovingaverage(100)
-smaLocal = Simplemovingaverage(6000)
+smaInstant = Simplemovingaverage(700)
+smaLocal = Simplemovingaverage(7000)
 bpm = 0
 start = time.time()
 while True:
@@ -50,7 +43,7 @@ while True:
 	inst = smaInstant(v)	
 	local = smaLocal(v)	
 	try:
-		if (inst/local) > 35: bpm += 1
+		if (inst/local) > 30: bpm += 1
 	except:
 		pass
 	byte = f.read(2)
