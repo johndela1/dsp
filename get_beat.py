@@ -1,6 +1,6 @@
 #!/usr/bin/python -u
 import struct
-import sys
+import sys, time
 
 
 from collections import deque
@@ -25,9 +25,7 @@ class Simplemovingaverage():
  
         return average
 f = sys.stdin
-#f = open('test.wav')
 byte = f.read(2)
-#trash = f.read(2)
 freq = 0
 old_trend = 0
 trend = 0
@@ -41,18 +39,25 @@ v=0
 smaInstant = Simplemovingaverage(100)
 smaLocal = Simplemovingaverage(6000)
 bpm = 0
-while byte != "":
+start = time.time()
+while True:
+	if byte == "":
+		byte = f.read(2)
 	pos += 1
-	v += (struct.unpack('<h', byte)[0] - v) / smoothing
+	#v += (struct.unpack('<h', byte)[0] - v) / smoothing
+	v = struct.unpack('<h', byte)[0] 
+
 	inst = smaInstant(v)	
 	local = smaLocal(v)	
 	try:
-		if (inst/local) > 900: bpm += 1
+		if (inst/local) > 35: bpm += 1
 	except:
 		pass
 	byte = f.read(2)
-	#trash = f.read(2)
 
 	if pos % 8000 == 0:
-		print bpm
+		print 'fps: ', (8000 / (time.time() - start))
+		print 'bpm', bpm
 		bpm = 0
+		start = time.time()
+
