@@ -8,7 +8,7 @@
 (defparameter *factor* .5)
 
 (defun pulse (n)
-  (setf decay 2000)
+  (setf decay 10000)
   (print 'beat)
   (calc-variance 'f)
 )
