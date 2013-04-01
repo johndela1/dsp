@@ -8,8 +8,8 @@
 (defparameter *factor* .5)
 
 (defun pulse (n)
-  (setf decay 10000)
-  (print 'beat)
+  (setf decay 6000)
+  (print 'delta)
   (calc-variance 'f)
 )
 
@@ -42,11 +42,10 @@
    (setf (car *var*)
     (exp_decay (abs (- (car *avg*) delta)) (car *var*) *factor*)))
  )
+ (print (ash (round (+ (car *avg*) (cdr *avg*))) -15))
  (print 'left)
- ;(print (round (/ (car *avg*) 1000)))
  (print (round (/ (car *var*) 10000)))
  (print 'right)
- ;(print (round (/ (cdr *avg*) 1000)))
  (print (round (/ (cdr *var*) 10000)))
  (print '-------)
 )
