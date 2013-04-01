@@ -8,7 +8,7 @@
 (defparameter *factor* .5)
 
 (defun pulse (n)
-  (setf decay 6000)
+  (setf decay 10000)
   (print 'delta)
   (calc-variance 'f)
 )
