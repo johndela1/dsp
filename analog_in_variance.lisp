@@ -5,6 +5,7 @@
 (defparameter *t2* 1)
 (defparameter *avg* (cons 1 1))
 (defparameter *var* (cons 1 1))
+(defparameter *bpm* 0)
 (defparameter *factor* .5)
 (defparameter *last-n* 0)
 
@@ -13,7 +14,8 @@
   (print 'bpm)
   (print (* 957000.0 (/ 1 (- n *last-n*))))
   (print 'bpm-based-on-clock)
-  (print (/ 60000000.0 (- *t1* *t2*)))
+  (setf *bpm* (exp_decay (/ 60000000.0 (- *t1* *t2*)) *bpm* .5))
+  (print *bpm*)
   (setf *last-n* n)
   (calc-variance 'f)
 )
